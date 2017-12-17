@@ -17,7 +17,7 @@
 
 package org.lineageos.hardware;
 
-import org.lineageos.internal.util.FileUtils;
+import org.lineageos.hardware.NewUtils;
 
 import lineageos.hardware.TouchscreenGesture;
 
@@ -72,8 +72,8 @@ public class TouchscreenGestures {
      */
     public static boolean isSupported() {
         for (String path : GESTURE_PATHS) {
-            if (!FileUtils.isFileWritable(path) ||
-                    !FileUtils.isFileReadable(path)) {
+            if (!NewUtils.isFileWritable(path) ||
+                    !NewUtils.isFileReadable(path)) {
                 return false;
             }
         }
@@ -102,6 +102,6 @@ public class TouchscreenGestures {
     public static boolean setGestureEnabled(
             final TouchscreenGesture gesture, final boolean state) {
         final String stateStr = state ? "1" : "0";
-        return FileUtils.writeLine(GESTURE_PATHS[gesture.id], stateStr);
+        return NewUtils.writeLine(GESTURE_PATHS[gesture.id], stateStr);
     }
 }

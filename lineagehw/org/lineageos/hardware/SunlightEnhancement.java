@@ -16,7 +16,7 @@
 
 package org.lineageos.hardware;
 
-import org.lineageos.internal.util.FileUtils;
+import org.lineageos.hardware.NewUtils;
 
 import android.util.Log;
 
@@ -35,7 +35,7 @@ public class SunlightEnhancement {
      * @return boolean Supported devices must return always true
      */
     public static boolean isSupported() {
-        return FileUtils.isFileWritable(FILE_HBM);
+        return NewUtils.isFileWritable(FILE_HBM);
     }
 
     /**
@@ -46,7 +46,7 @@ public class SunlightEnhancement {
      */
     public static boolean isEnabled() {
         try {
-            return Integer.parseInt(FileUtils.readOneLine(FILE_HBM)) > 0;
+            return Integer.parseInt(NewUtils.readOneLine(FILE_HBM)) > 0;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -61,7 +61,7 @@ public class SunlightEnhancement {
      * failed; true in any other case.
      */
     public static boolean setEnabled(boolean status) {
-        return FileUtils.writeLine(FILE_HBM, status ? "1" : "0");
+        return NewUtils.writeLine(FILE_HBM, status ? "1" : "0");
     }
 
     /**

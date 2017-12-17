@@ -16,7 +16,7 @@
 
 package org.lineageos.hardware;
 
-import org.lineageos.internal.util.FileUtils;
+import org.lineageos.hardware.NewUtils;
 
 /*
  * Disable capacitive keys
@@ -32,14 +32,14 @@ public class KeyDisabler {
     private static String CONTROL_PATH = "/proc/s1302/virtual_key";
 
     public static boolean isSupported() {
-        return FileUtils.isFileWritable(CONTROL_PATH);
+        return NewUtils.isFileWritable(CONTROL_PATH);
     }
 
     public static boolean isActive() {
-        return FileUtils.readOneLine(CONTROL_PATH).equals("1");
+        return NewUtils.readOneLine(CONTROL_PATH).equals("1");
     }
 
     public static boolean setActive(boolean state) {
-        return FileUtils.writeLine(CONTROL_PATH, (state ? "1" : "0"));
+        return NewUtils.writeLine(CONTROL_PATH, (state ? "1" : "0"));
     }
 }
