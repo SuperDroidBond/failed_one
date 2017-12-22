@@ -71,6 +71,8 @@
 /* RPM runs at 19.2Mhz. Divide by 19200 for msec */
 #define RPM_CLK 19200
 
+#define DOUBLE_TAP_FILE "/proc/touchpanel/double_tap_enable"
+
 const char *parameter_names[] = {
     "vlow_count",
     "accumulated_vlow_time",
@@ -808,6 +810,13 @@ int get_feature(struct power_module *module __unused, feature_t feature)
         return get_number_of_profiles();
     }
     return -1;
+}
+
+void set_feature(struct power_module __unused *module, feature_t feature, int state) {
+    if (feature == POWER_FEATURE_DOUBLE_TAP_TO_WAKE) {
+        ALOGI("%s POWER_FEATURE_DOUBLE_TAP_TO_WAKE %s", __func__, (state ? "ON" : "OFF"));
+        sysfs_write(DOUBLE_TAP_FILE, state ? "1" : "0");
+    }
 }
 
 struct power_module HAL_MODULE_INFO_SYM = {
