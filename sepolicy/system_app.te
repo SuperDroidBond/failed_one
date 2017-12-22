@@ -9,7 +9,3 @@ get_prop(system_app, hw_sku_prop);
 # userdebug and eng devices
 userdebug_or_eng(`set_prop(system_app, radio_prop)')
 
-allow system_app proc_touchpanel:dir search;
-allow system_app proc_touchpanel:file rw_file_perms;
-
-allow system_app sysfs_fpc_proximity:file rw_file_perms;
