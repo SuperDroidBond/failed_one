@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Oneplus Features</string>
+    <string name="app_name">Oneplus Special Features</string>
 
     <!-- O-Touch settings -->
     <string name="backpad_panel_title" translatable="false">O-Touch</string>
@@ -28,7 +28,7 @@
     <string name="touchpad_double_tap_summary">While in camera, double tap to capture image</string>
 
     <!-- Gesture shortcuts -->
-    <string name="screen_gestures_panel_title">Device extras</string>
+    <string name="screen_gestures_panel_title">OnePlus Shits</string>
     <string name="gestures_dashboard_summary">Gestures specific to OnePlus devices</string>
 
     <string name="touchscreen_double_tap_gesture_title">Wake device</string>
