@@ -21,13 +21,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.v7.preference.TwoStatePreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceScreen;
+import android.preference.TwoStatePreference;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -37,7 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.util.Log;
 
-public class DeviceSettings extends PreferenceFragment implements
+public class DeviceSettings extends PreferenceActivity implements
         Preference.OnPreferenceChangeListener {
 
     public static final String KEY_VIBSTRENGTH = "vib_strength";
@@ -45,14 +49,15 @@ public class DeviceSettings extends PreferenceFragment implements
     private static final String KEY_SLIDER_MODE_TOP = "slider_mode_top";
     private static final String KEY_SLIDER_MODE_CENTER = "slider_mode_center";
     private static final String KEY_SLIDER_MODE_BOTTOM = "slider_mode_bottom";
-    private static final String KEY_SWAP_BACK_RECENTS = "swap_back_recents";
     private static final String KEY_CATEGORY_GRAPHICS = "graphics";
+    private static final String KEY_CATEGORY_DISPLAY = "display";
 
     public static final String KEY_SRGB_SWITCH = "srgb";
     public static final String KEY_HBM_SWITCH = "hbm";
     public static final String KEY_PROXI_SWITCH = "proxi";
-    public static final String KEY_ONEPLUS_SWITCH = "oneplus_mode";
-    public static final String KEY_NIGHT_SWITCH = "night_mode";
+    public static final String KEY_DCI_SWITCH = "dci";
+    final String KEY_DEVICE_DOZE = "device_doze";
+    final String KEY_DEVICE_DOZE_PACKAGE_NAME = "org.lineageos.settings.doze";
 
     public static final String SLIDER_DEFAULT_VALUE = "4,2,0";
 
@@ -60,15 +65,20 @@ public class DeviceSettings extends PreferenceFragment implements
     private ListPreference mSliderModeTop;
     private ListPreference mSliderModeCenter;
     private ListPreference mSliderModeBottom;
-    private TwoStatePreference mSwapBackRecents;
-    //private TwoStatePreference mSRGBModeSwitch;
+    private TwoStatePreference mSRGBModeSwitch;
     private TwoStatePreference mHBMModeSwitch;
-    //private TwoStatePreference mOneplusModeSwitch;
-    //private TwoStatePreference mNightModeSwitch;
+    private TwoStatePreference mDCIModeSwitch;
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.main, rootKey);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        addPreferencesFromResource(R.xml.main);
+
+        ListView lv = getListView();
+        lv.setDivider(new ColorDrawable(Color.TRANSPARENT));
+        lv.setDividerHeight(0);
 
         mVibratorStrength = (VibratorStrengthPreference) findPreference(KEY_VIBSTRENGTH);
         if (mVibratorStrength != null) {
@@ -96,39 +106,48 @@ public class DeviceSettings extends PreferenceFragment implements
         mSliderModeBottom.setValueIndex(valueIndex);
         mSliderModeBottom.setSummary(mSliderModeBottom.getEntries()[valueIndex]);
 
-        mSwapBackRecents = (TwoStatePreference) findPreference(KEY_SWAP_BACK_RECENTS);
-        mSwapBackRecents.setChecked(Settings.System.getInt(getContext().getContentResolver(),
-                    Settings.System.BUTTON_SWAP_BACK_RECENTS, 0) != 0);
-
-        /*mSRGBModeSwitch = (TwoStatePreference) findPreference(KEY_SRGB_SWITCH);
+        mSRGBModeSwitch = (TwoStatePreference) findPreference(KEY_SRGB_SWITCH);
         mSRGBModeSwitch.setEnabled(SRGBModeSwitch.isSupported());
-        mSRGBModeSwitch.setChecked(SRGBModeSwitch.isCurrentlyEnabled(this.getContext()));
-        mSRGBModeSwitch.setOnPreferenceChangeListener(new SRGBModeSwitch());*/
+        mSRGBModeSwitch.setChecked(SRGBModeSwitch.isCurrentlyEnabled(this));
+        mSRGBModeSwitch.setOnPreferenceChangeListener(new SRGBModeSwitch());
 
         mHBMModeSwitch = (TwoStatePreference) findPreference(KEY_HBM_SWITCH);
         mHBMModeSwitch.setEnabled(HBMModeSwitch.isSupported());
-        mHBMModeSwitch.setChecked(HBMModeSwitch.isCurrentlyEnabled(this.getContext()));
+        mHBMModeSwitch.setChecked(HBMModeSwitch.isCurrentlyEnabled(this));
         mHBMModeSwitch.setOnPreferenceChangeListener(new HBMModeSwitch());
 
-        /*mOneplusModeSwitch = (TwoStatePreference) findPreference(KEY_ONEPLUS_SWITCH);
-        mOneplusModeSwitch.setEnabled(OneplusModeSwitch.isSupported());
-        mOneplusModeSwitch.setChecked(OneplusModeSwitch.isCurrentlyEnabled(this.getContext()));
-        mOneplusModeSwitch.setOnPreferenceChangeListener(new OneplusModeSwitch());
+        mDCIModeSwitch = (TwoStatePreference) findPreference(KEY_DCI_SWITCH);
+        boolean isPanelSupported = DCIModeSwitch.isSupportedPanel();
+        if (isPanelSupported) {
+            mDCIModeSwitch.setEnabled(DCIModeSwitch.isSupported());
+            mDCIModeSwitch.setChecked(DCIModeSwitch.isCurrentlyEnabled(this));
+            mDCIModeSwitch.setOnPreferenceChangeListener(new DCIModeSwitch());
+        } else {
+            PreferenceCategory graphicsCategory = (PreferenceCategory) findPreference(KEY_CATEGORY_GRAPHICS);
+            graphicsCategory.removePreference(mDCIModeSwitch);
+        }
 
-        mNightModeSwitch = (TwoStatePreference) findPreference(KEY_NIGHT_SWITCH);
-        mNightModeSwitch.setEnabled(NightModeSwitch.isSupported());
-        mNightModeSwitch.setChecked(NightModeSwitch.isCurrentlyEnabled(this.getContext()));
-        mNightModeSwitch.setOnPreferenceChangeListener(new NightModeSwitch());*/
+        if (!isAppInstalled(KEY_DEVICE_DOZE_PACKAGE_NAME)) {
+            PreferenceCategory displayCategory = (PreferenceCategory) findPreference(KEY_CATEGORY_DISPLAY);
+            displayCategory.removePreference(findPreference(KEY_DEVICE_DOZE));
+        }
     }
 
     @Override
-    public boolean onPreferenceTreeClick(Preference preference) {
-        if (preference == mSwapBackRecents) {
-            Settings.System.putInt(getContext().getContentResolver(),
-                    Settings.System.BUTTON_SWAP_BACK_RECENTS, mSwapBackRecents.isChecked() ? 1 : 0);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            finish();
             return true;
+        default:
+            break;
         }
-        return super.onPreferenceTreeClick(preference);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     @Override
@@ -155,8 +174,19 @@ public class DeviceSettings extends PreferenceFragment implements
         return true;
     }
 
+    private boolean isAppInstalled(String uri) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
+    }
+
     private int getSliderAction(int position) {
-        String value = Settings.System.getString(getContext().getContentResolver(),
+        String value = Settings.System.getString(getContentResolver(),
                     Settings.System.BUTTON_EXTRA_KEY_MAPPING);
         final String defaultValue = SLIDER_DEFAULT_VALUE;
 
@@ -174,7 +204,7 @@ public class DeviceSettings extends PreferenceFragment implements
     }
 
     private void setSliderAction(int position, int action) {
-        String value = Settings.System.getString(getContext().getContentResolver(),
+        String value = Settings.System.getString(getContentResolver(),
                     Settings.System.BUTTON_EXTRA_KEY_MAPPING);
         final String defaultValue = SLIDER_DEFAULT_VALUE;
 
@@ -187,7 +217,7 @@ public class DeviceSettings extends PreferenceFragment implements
             String[] parts = value.split(",");
             parts[position] = String.valueOf(action);
             String newValue = TextUtils.join(",", parts);
-            Settings.System.putString(getContext().getContentResolver(),
+            Settings.System.putString(getContentResolver(),
                     Settings.System.BUTTON_EXTRA_KEY_MAPPING, newValue);
         } catch (Exception e) {
         }

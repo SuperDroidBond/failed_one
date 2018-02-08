@@ -28,8 +28,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.preference.PreferenceViewHolder;
-import android.support.v14.preference.PreferenceDialogFragment;
+import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,9 +45,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.android.settingslib.CustomDialogPreference;
-
-public class AppSelectListPreference extends CustomDialogPreference {
+public class AppSelectListPreference extends DialogPreference implements DialogInterface.OnDismissListener {
 
     private static String TAG = "AppSelectListPreference";
 
@@ -58,8 +55,8 @@ public class AppSelectListPreference extends CustomDialogPreference {
     public static final String MUSIC_PLAY_ENTRY = "music_play";
     public static final String MUSIC_PREV_ENTRY = "music_prev";
     public static final String MUSIC_NEXT_ENTRY = "music_next";
-    public static final String WAKE_ENTRY = "wake";
 
+    private ImageView mAppIcon;
     private AppSelectListAdapter mAdapter;
     private Drawable mAppIconDrawable;
     private int mAppIconResourceId;
@@ -133,10 +130,6 @@ public class AppSelectListPreference extends CustomDialogPreference {
                 PackageItem musicPlayItem = new PackageItem(getContext().getResources().getString(R.string.music_play_entry),
                         R.drawable.ic_music_play, MUSIC_PLAY_ENTRY);
                 mInstalledPackages.add(0, musicPlayItem);
-
-                PackageItem wakeItem = new PackageItem(getContext().getResources().getString(R.string.wake_entry),
-                        R.drawable.ic_wakeup, WAKE_ENTRY);
-                mInstalledPackages.add(0, wakeItem);
 
                 PackageItem disabledItem = new PackageItem(getContext().getResources().getString(R.string.disabled_entry),
                         R.drawable.ic_disabled, DISABLED_ENTRY);
@@ -248,8 +241,7 @@ public class AppSelectListPreference extends CustomDialogPreference {
 
     private void init() {
         mPm = getContext().getPackageManager();
-        setDialogLayoutResource(R.layout.preference_dialog_applist);
-        setLayoutResource(R.layout.preference_app_select);
+        setWidgetLayoutResource(R.layout.applist_preference);
         setNegativeButtonText(android.R.string.cancel);
         setPositiveButtonText(null);
         setDialogTitle(R.string.choose_app);
@@ -258,45 +250,20 @@ public class AppSelectListPreference extends CustomDialogPreference {
     }
 
     @Override
-    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        super.onSetInitialValue(restorePersistedValue, defaultValue);
+    protected View onCreateView(ViewGroup parent) {
+        View v = super.onCreateView(parent);
+        mAppIcon = (ImageView) v.findViewById(R.id.app_icon);
         if (mTitle != null) {
             setSummary(mTitle);
         } else {
             setSummary(getContext().getResources().getString(R.string.not_ready_summary));
         }
-        mAppIconResourceId = R.drawable.ic_disabled;
-        setIcon(mAppIconResourceId);
-    }
-
-    @Override
-    protected void onBindDialogView(View view) {
-        super.onBindDialogView(view);
-
-        final ListView list = (ListView) view.findViewById(R.id.applist);
-        list.setAdapter(mAdapter);
-        list.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                PackageItem info = (PackageItem) parent.getItemAtPosition(position);
-                mValue = info.mValue;
-                if (shouldPersist()) {
-                    persistString(mValue);
-                }
-                mTitle = info.mTitle;
-                mAppIconDrawable = null;
-                mAppIconResourceId = 0;
-                if (info.mComponentName != null) {
-                    mAppIconDrawable = resolveAppIcon(info);
-                } else {
-                    mAppIconResourceId = info.mAppIconResourceId;
-                }
-
-                updatePreferenceViews();
-                callChangeListener(mValue);
-                getDialog().dismiss();
-            }
-        });
+        if (mAppIconDrawable != null) {
+            mAppIcon.setImageDrawable(mAppIconDrawable);
+        } else {
+            mAppIcon.setImageResource(mAppIconResourceId);
+        }
+        return v;
     }
 
     private void updatePreferenceViews() {
@@ -329,9 +296,6 @@ public class AppSelectListPreference extends CustomDialogPreference {
                 } else if (name.equals(MUSIC_PREV_ENTRY)) {
                     mTitle = getContext().getResources().getString(R.string.music_prev_entry);
                     mAppIconResourceId = R.drawable.ic_music_prev;
-                } else if (name.equals(WAKE_ENTRY)) {
-                    mTitle = getContext().getResources().getString(R.string.wake_entry);
-                    mAppIconResourceId = R.drawable.ic_wakeup;
                 } else {
                     ComponentName componentName = ComponentName.unflattenFromString(name);
                     PackageItem item = mAdapter.resolveApplication(componentName);
@@ -348,16 +312,47 @@ public class AppSelectListPreference extends CustomDialogPreference {
             mAppIconResourceId = R.drawable.ic_disabled;
         }
 
-        setSummary(mTitle);
-        if (mAppIconDrawable != null) {
-            setIcon(mAppIconDrawable);
-        } else {
-            setIcon(mAppIconResourceId);
+        if (mAppIcon != null) {
+            setSummary(mTitle);
+            if (mAppIconDrawable != null) {
+                mAppIcon.setImageDrawable(mAppIconDrawable);
+            } else {
+                mAppIcon.setImageResource(mAppIconResourceId);
+            }
         }
     }
 
     private Drawable getDefaultActivityIcon() {
         return getContext().getResources().getDrawable(android.R.drawable.sym_def_app_icon);
+    }
+
+    @Override
+    protected View onCreateDialogView() {
+        final ListView list = new ListView(getContext());
+        list.setAdapter(mAdapter);
+        list.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PackageItem info = (PackageItem) parent.getItemAtPosition(position);
+                mValue = info.mValue;
+                if (shouldPersist()) {
+                    persistString(mValue);
+                }
+                mTitle = info.mTitle;
+                mAppIconDrawable = null;
+                mAppIconResourceId = 0;
+                if (info.mComponentName != null) {
+                    mAppIconDrawable = resolveAppIcon(info);
+                } else {
+                    mAppIconResourceId = info.mAppIconResourceId;
+                }
+
+                updatePreferenceViews();
+                callChangeListener(mValue);
+                getDialog().dismiss();
+            }
+        });
+        return list;
     }
 
     public String getValue() {
@@ -378,13 +373,5 @@ public class AppSelectListPreference extends CustomDialogPreference {
         } catch (Exception e) {
         }
         return appIcon;
-    }
-
-    public static class AppSelectListPreferenceDialogFragment
-            extends CustomDialogPreference.CustomPreferenceDialogFragment {
-        public static CustomDialogPreference.CustomPreferenceDialogFragment
-                newInstance(String key) {
-            return CustomDialogPreference.CustomPreferenceDialogFragment.newInstance(key);
-        }
     }
 }

@@ -22,63 +22,97 @@
         android:persistent="false" />
 
     <SwitchPreference
-        android:key="off_screen_gesture_feedback"
-        android:summary="@string/off_screen_gesture_feedback_summary_head"
-        android:title="@string/off_screen_gesture_feedback_title_head"
-        android:persistent="false" />
+        android:key="taptowake"
+        android:summary="@string/taptowake_summary"
+        android:title="@string/taptowake_title" />
 
     <PreferenceCategory
-        android:title="@string/gesture_app_title">
+        android:title="@string/category_circle_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="circle_gesture_app"
-            android:title="@string/category_circle_gesture"
-            android:persistent="false" />
+            android:title="@string/gesture_app_title"
+            android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_double_swipe_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="double_swipe_gesture_app"
-            android:title="@string/category_double_swipe_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_left_arrow_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="left_arrow_gesture_app"
-            android:title="@string/category_left_arrow_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_right_arrow_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="right_arrow_gesture_app"
-            android:title="@string/category_right_arrow_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_up_arrow_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="up_arrow_gesture_app"
-            android:title="@string/category_up_arrow_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_down_arrow_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="down_arrow_gesture_app"
-            android:title="@string/category_down_arrow_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_down_swipe_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="down_swipe_gesture_app"
-            android:title="@string/category_down_swipe_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_up_swipe_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="up_swipe_gesture_app"
-            android:title="@string/category_up_swipe_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_left_swipe_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="left_swipe_gesture_app"
-            android:title="@string/category_left_swipe_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_right_swipe_gesture">
 
         <org.omnirom.device.AppSelectListPreference
             android:key="right_swipe_gesture_app"
-            android:title="@string/category_right_swipe_gesture"
+            android:title="@string/gesture_app_title"
             android:persistent="false"/>
-
     </PreferenceCategory>
 </PreferenceScreen>
