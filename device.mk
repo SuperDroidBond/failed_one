@@ -242,11 +242,11 @@ PRODUCT_PACKAGES += \
 
 # Doze mode
 PRODUCT_PACKAGES += \
-    OneplusDoze
+    OneplusThreeDoze
 
-# OP3 Parts
+# Device Parts
 PRODUCT_PACKAGES += \
-    Oneplus3Parts
+    ConfigPanel    
 
 # DRM
 PRODUCT_PACKAGES += \
