@@ -246,7 +246,7 @@ PRODUCT_PACKAGES += \
 
 # Device Parts
 PRODUCT_PACKAGES += \
-    ConfigPanel    
+    OneplusShit    
 
 # DRM
 PRODUCT_PACKAGES += \

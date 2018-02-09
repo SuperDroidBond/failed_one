@@ -19,26 +19,19 @@ package com.dirtyunicorns.settings.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.SystemProperties;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class DCIModeSwitch implements OnPreferenceChangeListener {
+public class TapToWakeSwitch implements OnPreferenceChangeListener {
 
-    private static final String FILE = "/sys/devices/virtual/graphics/fb0/dci_p3";
+    private static final String FILE = "/proc/touchpanel/double_tap_enable";
 
     public static String getFile() {
         if (Utils.fileWritable(FILE)) {
             return FILE;
         }
         return null;
-    }
-
-    public static boolean isSupportedPanel() {
-        //String panel = SystemProperties.get("ro.product.panel");
-        //return panel != null && panel.contains("s6e3fa5");
-        return true;
     }
 
     public static boolean isSupported() {
@@ -56,3 +49,4 @@ public class DCIModeSwitch implements OnPreferenceChangeListener {
         return true;
     }
 }
+

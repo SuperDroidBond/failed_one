@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2016 The OmniROM Project
+* Copyright (C) 2017 The OmniROM Project
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,19 +19,26 @@ package com.dirtyunicorns.settings.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.SystemProperties;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class SRGBModeSwitch implements OnPreferenceChangeListener {
+public class DCIModeSwitch implements OnPreferenceChangeListener {
 
-    private static final String FILE = "/sys/devices/virtual/graphics/fb0/srgb";
+    private static final String FILE = "/sys/devices/virtual/graphics/fb0/DCI_P3";
 
     public static String getFile() {
         if (Utils.fileWritable(FILE)) {
             return FILE;
         }
         return null;
+    }
+
+    public static boolean isSupportedPanel() {
+        //String panel = SystemProperties.get("ro.product.panel");
+        //return panel != null && panel.contains("s6e3fa5");
+        return true;
     }
 
     public static boolean isSupported() {
