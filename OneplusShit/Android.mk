@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2014 SlimRoms Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_CERTIFICATE := platform
-LOCAL_PRIVILEGED_MODULE := true
 LOCAL_PACKAGE_NAME := OneplusShit
-LOCAL_MODULE_TAGS := optional
+LOCAL_PRIVILEGED_MODULE := true
+LOCAL_PROGUARD_FLAG_FILES := proguard.flags
+LOCAL_DEX_PREOPT := false
 
 include $(BUILD_PACKAGE)
