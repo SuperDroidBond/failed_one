@@ -15,70 +15,6 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- General strings -->
-    <string name="dlg_ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="reset">Reset</string>
-    <string name="reset_message">Reset all entries to default?</string>
-
-    <string name="screen_off_gesture_title">Screen off gestures</string>
-    <string name="group_applications">Applications</string>
-    <string name="select_custom_app_title">Select custom application</string>
-
-
-    <string name="enable_gestures_title">Enable gestures</string>
-    <string name="enable_gestures_summary">Enable screen off gestures</string>
-    <string name="gestures_title">Gestures</string>
-    <string name="gesture_arrow_down_title">Arrow down</string>
-    <string name="gesture_arrow_left_title">Arrow left</string>
-    <string name="gesture_arrow_right_title">Arrow right</string>
-    <string name="gesture_arrow_up_title">Arrow up</string>
-    <string name="gesture_circle_title">Circle</string>
-    <string name="gesture_double_swipe_title">Double finger swipe down</string>
-    <string name="gesture_double_tap_title">Double tap</string>
-
-     <!-- Notification slider -->
-    <string name="notification_slider">Notification slider</string>
-    <string name="action">Action</string>
-
-    <string name="top_position">Top position</string>
-    <string name="middle_position">Middle position</string>
-    <string name="bottom_position">Bottom position</string>
-    <string name="total_silence">Total silence</string>
-    <string name="alarms_only">Alarms only</string>
-    <string name="priority_only">Priority only</string>
-    <string name="none">All notifications</string>
-    <string name="vibrate">Vibrate</string>
-    <string name="ring">Ring</string>
-
-    <string name="button_swap_title">Swap Buttons</string>
-    <string name="button_swap_summary">Swap the order of recents and back buttons</string>
-
-    <!-- Gesture shortcuts -->
-    <string name="screen_gestures_panel_title">OnePlus Gestures</string>
-    <string name="gestures_dashboard_summary">Gestures specific to OnePlus devices</string>
-    <string name="app_name">Oneplus Special Features</string>
-
-    <!-- New Options -->
-    <string name="device_extras">Oneplus Shit</string>
-    <string name="graphics_title">Graphics</string>
-    <string name="category_vibrator">Vibrator</string>
-    <string name="vib_strength_title_head">Strength</string>
-    <string name="vib_strength_summary_head">Define the strength of the vibrator</string>
-    <string name="srgb_mode_summary"></string>
-    <string name="srgb_mode_title">sRGB mode</string>
-    <string name="hbm_mode_summary"></string>
-    <string name="hbm_mode_title">High brightness mode</string>
-    <string name="dci_mode_summary"></string>
-    <string name="dci_mode_title">Wide color gamut mode</string>
-    <string name="display_category">Display</string>
-    <string name="device_doze_title">Ambient Display</string>
-    <string name="device_doze_summary">Ambient Display Options</string>
-    <string name="taptowake_title">D2TW</string>
-    <string name="taptowake_summary">Double Tap To Wake</string>
-    <string name="slider_op_title">Alert Slider</string>
-    <string name="slider_op_summary">Notification Slider Settings</string>
-
     <!-- Shortcut actions -->
     <string name="shortcut_action_none">None</string>
     <string name="shortcut_action_app">Custom app</string>
@@ -129,3 +65,4 @@
     <string name="screen_off_gesture_settings_title">Screen off gestures</string>
 
 </resources>
+

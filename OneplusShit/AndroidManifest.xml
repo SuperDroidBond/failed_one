@@ -36,32 +36,35 @@
             android:label="@string/screen_off_gesture_title"
             android:theme="@android:style/Theme.DeviceDefault.Settings">
           <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
+                <action android:name="android.intent.action.MAIN" />
           </intent-filter>
-          <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_settings_gestures" />
-          <meta-data
-                android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.homepage" />
         </activity>
+
+       <!-- <activity
+            android:name=".settings.ScreenOffGesture"
+            android:label="@string/screen_off_gesture_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings">
+          <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+          </intent-filter>
+        </activity>-->
 
         <activity
             android:name=".settings.SliderSettings"
             android:theme="@android:style/Theme.DeviceDefault.Settings"
             android:label="@string/notification_slider">
             <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-            <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_settings_additional_buttons" />
-            <meta-data
-                android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.homepage" />
         </activity>
 
         <receiver android:name=".BootReceiver" >
+          <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+          </intent-filter>
+        </receiver>
+
+        <receiver android:name=".Startup" >
           <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
           </intent-filter>

@@ -16,21 +16,25 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/enable_gestures_title">
-        <com.oneplus.shit.settings.ScreenOffGesture
-             android:persistent="false"
-             android:title="@string/enable_gestures_title"
-             android:summary="@string/enable_gestures_summary" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/notification_slider">
-        <com.oneplus.shit.settings.SliderSettings
-             android:persistent="false"
-             android:title="@string/slider_op_title"
-             android:summary="@string/slider_op_summary" />
-    </PreferenceCategory>
+    <Preference
+        android:key="gestures"
+        android:title="@string/enable_gestures_title"
+        android:summary="@string/enable_gestures_summary"
+        android:persistent="false" >
+        <intent android:action="android.intent.action.MAIN"
+                android:targetPackage="com.oneplus.shit"
+                android:targetClass="com.oneplus.shit.settings.ScreenOffGestureSettings" />
+    </Preference>
+	
+    <Preference
+        android:key="slider"
+        android:title="@string/slider_op_title"
+        android:summary="@string/slider_op_summary"
+        android:persistent="false" >
+        <intent android:action="android.intent.action.MAIN"
+                android:targetPackage="com.oneplus.shit"
+                android:targetClass="com.oneplus.shit.settings.SliderSettings" />
+    </Preference>
 
     <SwitchPreference
         android:key="taptowake"

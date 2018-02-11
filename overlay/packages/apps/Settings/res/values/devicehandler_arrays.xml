@@ -13,24 +13,6 @@
 -->
 <resources>
 
-    <string-array name="notification_slider_action_entries" translatable="false">
-        <item>@string/total_silence</item>
-        <item>@string/alarms_only</item>
-        <item>@string/priority_only</item>
-        <item>@string/none</item>
-        <item>@string/vibrate</item>
-        <item>@string/ring</item>
-    </string-array>
-
-    <string-array name="notification_slider_action_entry_values" translatable="false">
-        <item>600</item>
-        <item>601</item>
-        <item>602</item>
-        <item>603</item>
-        <item>604</item>
-        <item>605</item>
-    </string-array>
-
     <!-- Arrays for Screen off gestures -->
     <string-array name="shortcut_action_screen_off_entries">
         <item>@string/shortcut_action_app</item>
@@ -61,3 +43,4 @@
     </string-array>
 
 </resources>
+
